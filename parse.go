@@ -12,18 +12,33 @@ import (
 const splitCharacter = ","
 
 // ClientInfo represents a CLIENT_LIST entry
-// HEADER,CLIENT_LIST,Common Name,Real Address,Virtual Address,Virtual IPv6 Address,Bytes Received,Bytes Sent,Connected Since,Connected Since (time_t),Username,Client ID,Peer ID
+// HEADER,CLIENT_LIST,Common Name,Real Address,Virtual Address,Virtual IPv6 Address,Bytes Received,Bytes Sent,Connected Since,Connected Since (time_t),Username,Client ID,Peer ID,Data Channel Cipher
+// 0. HEADER
+// 0. CLIENT_LIST
+// 1. Common Name
+// 2. Real Address
+// 3. Virtual Address
+// 4. Virtual IPv6 Address
+// 5. Bytes Received
+// 6. Bytes Sent
+// 7. Connected Since
+// 8. Connected Since (time_t)
+// 9. Username
+//10. Client ID
+//11. Peer ID
+//12. Data Channel Cipher
 type ClientInfo struct {
-	Name             string
-	RealAddress      string
-	VirtualAddress   string
-	VirtualV6Address string
-	BytesReceived    int
-	BytesSent        int
-	ConnectedSince   time.Time
-	Username         string
-	ClientID         int
-	PeerID           int
+	Name              string
+	RealAddress       string
+	VirtualAddress    string
+	VirtualV6Address  string
+	BytesReceived     int
+	BytesSent         int
+	ConnectedSince    time.Time
+	Username          string
+	ClientID          int
+	PeerID            int
+	DataChannelCipher string
 }
 
 // RoutingInfo represents a ROUTING_TABLE entry
@@ -58,16 +73,17 @@ func parseClientListEntry(line string) (ClientInfo, error) {
 		return ClientInfo{}, err
 	}
 	info := ClientInfo{
-		Name:             parts[1],
-		RealAddress:      parts[2],
-		VirtualAddress:   parts[3],
-		VirtualV6Address: parts[4],
-		BytesReceived:    bytesReceived,
-		BytesSent:        bytesSent,
-		ConnectedSince:   time.Unix(int64(connectedSinceUnix), 0),
-		Username:         parts[9],
-		ClientID:         clientID,
-		PeerID:           peerID,
+		Name:              parts[1],
+		RealAddress:       parts[2],
+		VirtualAddress:    parts[3],
+		VirtualV6Address:  parts[4],
+		BytesReceived:     bytesReceived,
+		BytesSent:         bytesSent,
+		ConnectedSince:    time.Unix(int64(connectedSinceUnix), 0),
+		Username:          parts[9],
+		ClientID:          clientID,
+		PeerID:            peerID,
+		DataChannelCipher: parts[12],
 	}
 	return info, nil
 }
