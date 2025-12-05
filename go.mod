@@ -1,1 +1,1 @@
-module github.com/thor77/ovpnstats
+module github.com/emibcn/ovpnstats
